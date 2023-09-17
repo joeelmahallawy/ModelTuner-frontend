@@ -1,3 +1,5 @@
+import utf8 from "utf8";
+
 import { v4 as uuidv4 } from "uuid";
 
 import crypto from "crypto";
@@ -21,23 +23,25 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const openAiApi = new OpenAI({
-      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-      organization: process.env.NEXT_PUBLIC_OPENAI_ORGANIZATION_ID,
+    const { trainingData, dataSetName } = JSON.parse(req.body);
+
+    let fileblob = new Blob([trainingData], {
+      type: "text/plain; charset=utf8",
     });
 
-    const randomUUID = uuidv4();
+    let body = new FormData();
 
-    fs.writeFile(`mydata.jsonl`, req.body, "utf8", (err) => {
-      console.log(err);
-    });
+    body.append("purpose", "fine-tune");
+    body.append("file", fileblob, '123');
 
-    const uploadResponse = await openAiApi.files.create({
-      file: fs.createReadStream(`mydata.jsonl`, {
-        encoding: "utf8",
-      }),
-      purpose: "fine-tune",
+    const upload = await fetch("https://api.openai.com/v1/files", {
+      body,
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+      },
     });
+    const uploadResponse = await upload.json();
 
     console.log("RESPONSE:", uploadResponse);
     return res.send(uploadResponse);

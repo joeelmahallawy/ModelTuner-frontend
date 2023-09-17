@@ -7,6 +7,7 @@ import {
   Stepper,
   Loader,
   Center,
+  TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Conversation } from "../../utils/interfaces";
@@ -22,6 +23,7 @@ const FeedChatGptModal = ({
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [uploadFileIsLoading, setUploadFileIsLoading] = useState(false);
+  const [dataSetName, setDataSetName] = useState("");
   const [active, setActive] = useState(-1);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
@@ -39,6 +41,12 @@ const FeedChatGptModal = ({
           </span>
           chats to train your model on.
         </Text>
+        <TextInput
+          mt={10}
+          label="Name your data set"
+          withAsterisk
+          placeholder="e.g. Programmer persona fine-tuning data set"
+        />
         <Button
           color="indigo"
           fullWidth
@@ -54,7 +62,7 @@ const FeedChatGptModal = ({
             // const body = new FormData();
             // body.append("data", trainingData);
             const uploadFile = await fetch(`/api/uploadFileToOpenAI`, {
-              body: trainingData,
+              body: JSON.stringify({ trainingData, dataSetName }),
               method: "POST",
             });
             const uploadFileResponse = await uploadFile.json();
@@ -109,6 +117,15 @@ const FeedChatGptModal = ({
             </Stepper.Completed>
           </Stepper>
         )}
+        <Button
+          onClick={async () => {
+            const listFiles = await fetch(`/api/listFiles`);
+            const filesListed = await listFiles.json();
+            console.log(filesListed);
+          }}
+        >
+          List files
+        </Button>
       </Modal>
 
       <Group>
