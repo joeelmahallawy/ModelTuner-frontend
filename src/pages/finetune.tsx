@@ -4,7 +4,7 @@ import { Box, Button, Center, FileButton, Flex, Title } from "@mantine/core";
 import SidebarWrapper from "../components/dashboard/SidebarWrapper";
 import { useState } from "react";
 import UploadCustomTrainingData from "../components/uploadCustomTrainingData";
-import UploadPage from "../components/training/uploadJson";
+import UploadPage from "../components/uploadChatHistoryData.tsx";
 
 const FineTunePage = () => {
   const [chatGptConversations, setChatGptConversations] = useState("");

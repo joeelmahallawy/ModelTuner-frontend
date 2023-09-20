@@ -8,7 +8,7 @@ import {
   Loader,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import UploadPage from "../training/uploadJson";
+import UploadPage from "../uploadChatHistoryData.tsx";
 import { useEffect, useState } from "react";
 import { useAsyncFn } from "react-use";
 import { fetchWithJWT, getEnvironmentServerUrl } from "../../utils";

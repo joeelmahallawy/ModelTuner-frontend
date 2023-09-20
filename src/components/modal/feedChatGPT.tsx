@@ -31,6 +31,7 @@ const FeedChatGptModal = ({
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [datasetName, setDatasetName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -51,11 +52,12 @@ const FeedChatGptModal = ({
           placeholder="e.g. Programmer persona fine-tuning data set"
         />
         <Button
+          loading={isLoading}
           color="indigo"
           fullWidth
           mt={10}
           onClick={async () => {
-            // setUploadFileIsLoading(true);
+            setIsLoading(true);
             // train on only the conversations the user selected
             const trainingData = formatToTrainingData({
               selectedChatsForTrainingData: chatHistory.filter((chat) =>
@@ -63,9 +65,8 @@ const FeedChatGptModal = ({
               ),
             });
 
-            // console.log(`TRIANIJNG DATA:`, trainingData);
-            // const body = new FormData();
-            // body.append("data", trainingData);
+            console.log(`TRIANIJNG DATA:`, trainingData);
+
             const uploadFile = await fetchWithJWT(
               `${getEnvironmentServerUrl()}/uploadFileToOpenAI`,
               {
@@ -77,15 +78,16 @@ const FeedChatGptModal = ({
             const uploadFileResponse = await uploadFile.json();
 
             setShowFileUploadPage(true);
-
             close();
             if (!uploadFile.ok) {
+              setIsLoading(false);
               return showCustomToast({
-                message: uploadFileResponse.error,
+                message: uploadFileResponse.message,
                 color: "red",
                 title: "",
               });
             }
+            setIsLoading(false);
             setUploadedFileId(uploadFileResponse.id);
             return showCustomToast({
               color: "green",

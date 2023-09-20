@@ -164,7 +164,7 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
               setLoading(false);
               return showCustomToast({
                 color: "red",
-                message: finetuneJob?.error,
+                message: finetuneJob?.message,
                 title: "",
               });
             }}

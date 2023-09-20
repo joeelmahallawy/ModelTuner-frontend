@@ -12,7 +12,7 @@ import {
   rem,
 } from "@mantine/core";
 import { IconUpload, IconX, IconCodeDots } from "@tabler/icons-react";
-import { Dropzone } from "@mantine/dropzone";
+
 import { Dispatch, SetStateAction, useState } from "react";
 
 import { useRouter } from "next/router";

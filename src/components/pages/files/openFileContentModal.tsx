@@ -1,10 +1,22 @@
-import { Text, Modal, Center, Title, Button, Loader } from "@mantine/core";
+import {
+  Text,
+  Modal,
+  Center,
+  Title,
+  Button,
+  Loader,
+  ActionIcon,
+  Tooltip,
+  Anchor,
+} from "@mantine/core";
 import { Prism } from "@mantine/prism";
 import moment from "moment";
 import OpenAI from "openai";
 import { useEffect, useState } from "react";
 import { fetchWithJWT, getEnvironmentServerUrl } from "../../../utils";
 import { useAsyncFn } from "react-use";
+import { IconDownload } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 const OpenFileContentModal = ({
   opened,
@@ -15,6 +27,7 @@ const OpenFileContentModal = ({
   currentFileOpen: OpenAI.FileObject;
   close: () => void;
 }) => {
+  const router = useRouter();
   const [fileContent, setFileContent] = useState("");
   const [fileContentIsLoading, setFileContentIsLoading] = useState(false);
 
@@ -24,7 +37,12 @@ const OpenFileContentModal = ({
       `${getEnvironmentServerUrl()}/getFileContent?id=${fileID}`
     );
     const result = await response.json();
-    setFileContent(result?.fileContent);
+    console.log(`RESULT:`, result);
+    setFileContent(
+      typeof result?.fileContent === "string"
+        ? result?.fileContent
+        : JSON.stringify(result?.fileContent?.messages)
+    );
     setFileContentIsLoading(false);
     return result;
   }, []);
@@ -36,7 +54,13 @@ const OpenFileContentModal = ({
   console.log(state);
 
   return (
-    <Modal withCloseButton={false} size="lg" opened={opened} onClose={close}>
+    <Modal
+      trapFocus={false}
+      withCloseButton={false}
+      size="lg"
+      opened={opened}
+      onClose={close}
+    >
       {/* <Center> */}
       <Center sx={{ justifyContent: "space-between" }}>
         <span style={{ fontWeight: 700 }}>File ID: </span>
@@ -51,9 +75,39 @@ const OpenFileContentModal = ({
         </Text>
       </Center>
 
-      <Title mt={20} fw={600} order={2}>
-        {currentFileOpen?.filename}
-      </Title>
+      <Center mt={20} sx={{ justifyContent: "space-between" }}>
+        <Title fw={600} order={2}>
+          {currentFileOpen?.filename}
+        </Title>
+
+        <Tooltip label="Download file" position="top">
+          <Anchor download>
+            <ActionIcon
+              onClick={async () => {
+                // TODO: download JSON or CSV file in browser
+
+                console.log(currentFileOpen);
+                //   const blob = new Blob([fileContent], {
+                //     type: "application/json",
+                //   });
+                //   const href = URL.createObjectURL(blob);
+                //   // ;
+              }}
+              size="lg"
+              sx={(t) => ({
+                "&:hover": { background: t.colors.gray[4] },
+                background: t.colors.gray[3],
+              })}
+              // variant="filled"
+              aria-label="Download file"
+
+              // color="rgba(196, 196, 196, 1)"
+            >
+              <IconDownload color="black" />
+            </ActionIcon>
+          </Anchor>
+        </Tooltip>
+      </Center>
 
       {fileContentIsLoading ? (
         <Center>
@@ -69,9 +123,12 @@ const OpenFileContentModal = ({
           {fileContent}
         </Prism>
       )}
-      <Center sx={{ justifyContent: "flex-end" }}>
-        <Button onClick={close} fullWidth mt={10}>
-          Done
+      <Center sx={{ justifyContent: "flex-end", gap: 5 }}>
+        <Button color="red" onClick={close} fullWidth mt={10}>
+          Close
+        </Button>
+        <Button fullWidth mt={10}>
+          Fine-tune model with this file
         </Button>
       </Center>
     </Modal>
