@@ -1,10 +1,22 @@
 import { AppProps } from "next/app";
 import { Notifications } from "@mantine/notifications";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { Center, Loader, MantineProvider } from "@mantine/core";
+import { SessionContext } from "../components/sessionProvider";
+import { useEffect, useState } from "react";
+import { fetchWithJWT } from "../utils";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const getSession = await fetchWithJWT(`/api/session`);
+      const sessionData = await getSession.json();
+      setSession(sessionData);
+    })();
+  }, []);
 
   return (
     <>
@@ -25,8 +37,15 @@ export default function App(props: AppProps) {
         }}
       >
         <Notifications position="bottom-center" />
-
-        <Component {...pageProps} />
+        <SessionContext.Provider value={[session, setSession]}>
+          {session ? (
+            <Component {...pageProps} />
+          ) : (
+            <Center sx={{ height: "80vh" }}>
+              <Loader color="black" size="xl" />
+            </Center>
+          )}
+        </SessionContext.Provider>
       </MantineProvider>
     </>
   );

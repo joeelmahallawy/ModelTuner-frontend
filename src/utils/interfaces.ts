@@ -41,3 +41,41 @@ export interface Conversation {
   conversation_template_id: string | null;
   id: string;
 }
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+  createdAt: Date;
+  openAiApiKey: string;
+};
+
+export type SessionObject = {
+  user: User;
+};
+
+export type FileStatus =
+  | "uploaded"
+  | "processed"
+  | "pending"
+  | "error"
+  | "deleting"
+  | "deleted";
+
+export type FinetuneJob = {
+  created_at: number;
+  error: string;
+  fine_tuned_model: string;
+  finished_at: number;
+  hyperparameters: { n_epochs: number };
+  id: string;
+  model: string;
+  object: string;
+  organization_id: string;
+  result_files: string[];
+  status: string;
+  trained_tokens: number;
+  training_file: string;
+  validation_file: string;
+};

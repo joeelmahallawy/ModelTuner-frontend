@@ -10,12 +10,19 @@ import {
   Title,
   Divider,
 } from "@mantine/core";
-import DashboardHeader from "../../componenets/header";
-import { useState } from "react";
+
+import { Dispatch, SetStateAction, useState } from "react";
 import { Conversation } from "../../utils/interfaces";
 import FeedChatGptModal from "../modal/feedChatGPT";
+import FileStatusPage from "../uploadCustomTrainingData/fileStatusPage";
 
-const UploadPage = () => {
+const UploadPage = ({
+  setUploadMethod,
+}: {
+  setUploadMethod: Dispatch<
+    SetStateAction<"" | "customData" | "conversationData">
+  >;
+}) => {
   const [chatGptConversations, setChatGptConversations] = useState<
     Conversation[]
   >([]);
@@ -23,6 +30,8 @@ const UploadPage = () => {
   const [selectedConversations, setSelectedConversations] = useState<string[]>(
     []
   );
+  const [uploadedFileId, setUploadedFileId] = useState("");
+  const [showFileUploadPage, setShowFileUploadPage] = useState(false);
 
   const toggleAll = () => {
     setSelectedConversations(
@@ -33,11 +42,21 @@ const UploadPage = () => {
     );
   };
 
-  return (
+  return showFileUploadPage ? (
+    <>
+      <Title order={2} mb={10}>
+        Fine-tune from conversation history
+      </Title>
+      <Divider my={10} />
+      <FileStatusPage uploadedFileId={uploadedFileId} />
+    </>
+  ) : (
     <>
       <Center>
-        <Box sx={{ width: "60%" }}>
-          <Center sx={{ justifyContent: "space-between", marginTop: 20 }}>
+        <Box sx={{ width: "100%" }}>
+          <Title order={2}>Upload conversation history</Title>
+          <Divider my={10} />
+          <Center sx={{ justifyContent: "space-between", marginTop: 0 }}>
             <FileButton
               onChange={(e) => {
                 // protection for cancellin file input after uploading a file
@@ -52,11 +71,14 @@ const UploadPage = () => {
               }}
               accept="application/json"
             >
-              {(props) => <Button {...props}>Upload JSON file</Button>}
+              {(props) => <Button {...props}>Upload chat history</Button>}
             </FileButton>
+
             <FeedChatGptModal
               selectedConversations={selectedConversations}
               chatHistory={chatGptConversations}
+              setShowFileUploadPage={setShowFileUploadPage}
+              setUploadedFileId={setUploadedFileId}
             />
           </Center>
           <Box mt={10}>
@@ -167,7 +189,9 @@ const UploadPage = () => {
                   </Center>
                 ))
               ) : (
-                <Title>No conversations found</Title>
+                <Title align="center" mt={10} order={3}>
+                  No conversations found
+                </Title>
               )
             ) : (
               <Title order={2}>No conversation uploaded yet</Title>
