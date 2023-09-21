@@ -1,6 +1,3 @@
-import { getEncoding, encodingForModel } from "js-tiktoken";
-
-import { get_encoding } from "tiktoken";
 import { Prism } from "@mantine/prism";
 import {
   Anchor,
@@ -18,8 +15,6 @@ import {
 import { IconUpload, IconX, IconCodeDots } from "@tabler/icons-react";
 import { Dropzone } from "@mantine/dropzone";
 import { Dispatch, SetStateAction, useState } from "react";
-
-const encoding = get_encoding("cl100k_base");
 
 import {
   fetchWithJWT,

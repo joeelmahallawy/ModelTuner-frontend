@@ -302,6 +302,7 @@ main();`}
           onClick={() => {
             router.push(`/finetune`);
           }}
+          // leftIcon={<Text size={20}>🤖</Text>}
           leftIcon={<IconRobot />}
         >
           Fine-tune
@@ -353,8 +354,8 @@ main();`}
                 "&:hover": { cursor: "pointer", background: t.colors.gray[1] },
               })}
             >
-              <IconRobot size={24} style={{ strokeWidth: 2.25 }} />
-
+              {/* <IconRobot size={24} style={{ strokeWidth: 2.25 }} /> */}
+              <Text size={28}>🤖</Text>
               <Title
                 fw={500}
                 order={4}

@@ -7,7 +7,6 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.7",
     "@editorjs/editorjs": "^2.28.0",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
@@ -31,7 +30,6 @@
     "embla-carousel-react": "^8.0.0-rc12",
     "formidable": "^3.5.1",
     "grant": "^5.4.21",
-    "js-tiktoken": "^1.0.7",
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
     "next": "latest",
@@ -40,9 +38,9 @@
     "pythonia": "^1.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
     "react-reveal": "^1.2.2",
     "react-use": "^17.4.0",
-    "tiktoken": "^1.0.10",
     "utf8": "^3.0.0",
     "uuid": "^9.0.1"
   },

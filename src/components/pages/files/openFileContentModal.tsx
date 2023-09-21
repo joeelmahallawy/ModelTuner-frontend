@@ -119,7 +119,11 @@ const OpenFileContentModal = ({
       <Divider mt={10} />
 
       <Center mt={10} mb={10} sx={{ justifyContent: "space-between" }}>
-        <Title fw={600} order={2}>
+        <Title
+          fw={600}
+          order={2}
+          sx={{ width: "85%", overflowX: "scroll", textOverflow: "hidden" }}
+        >
           {currentFileOpen?.filename}
         </Title>
 

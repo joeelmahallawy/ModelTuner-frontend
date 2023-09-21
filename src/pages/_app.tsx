@@ -1,4 +1,5 @@
 import { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { Notifications } from "@mantine/notifications";
 import Head from "next/head";
 import { Center, Loader, MantineProvider } from "@mantine/core";
@@ -9,12 +10,17 @@ import { fetchWithJWT } from "../utils";
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
   const [session, setSession] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const getSession = await fetchWithJWT(`/api/session`);
-      const sessionData = await getSession.json();
-      setSession(sessionData);
+      // to ensure we don't fetch session on landing/login pages
+      if (router.pathname !== "/login" && router.pathname !== "/") {
+        //
+        const getSession = await fetchWithJWT(`/api/session`);
+        const sessionData = await getSession.json();
+        setSession(sessionData);
+      }
     })();
   }, []);
 
@@ -38,7 +44,13 @@ export default function App(props: AppProps) {
       >
         <Notifications position="bottom-center" />
         <SessionContext.Provider value={[session, setSession]}>
-          {session ? (
+          {/* show page when we have session fetched OR */}
+          {session ||
+          // were in login page
+          router.pathname === "/login" ||
+          // or landing, otherwise, show loader
+          router.pathname === "/" ? (
+            // @ts-expect-error
             <Component {...pageProps} />
           ) : (
             <Center sx={{ height: "80vh" }}>
