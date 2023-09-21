@@ -53,6 +53,7 @@ const FeedChatGptModal = ({
           withAsterisk
           placeholder="e.g. Programmer persona fine-tuning data set"
         />
+
         <Button
           loading={isLoading}
           color="indigo"
@@ -93,25 +94,13 @@ const FeedChatGptModal = ({
             setUploadedFileId(uploadFileResponse.id);
             return showCustomToast({
               color: "green",
-              message: "Successfully uploaded file to OpenAI!",
+              message: `Successfully uploaded "${datasetName}.jsonl" to OpenAI!`,
               title: "",
             });
           }}
         >
           Upload file
         </Button>
-
-        {/* <Button
-          onClick={async () => {
-            const listFiles = await fetchWithJWT(
-              `${getEnvironmentServerUrl()}/listFiles`
-            );
-            const filesListed = await listFiles.json();
-            console.log(filesListed);
-          }}
-        >
-          List files
-        </Button> */}
       </Modal>
 
       <Group>

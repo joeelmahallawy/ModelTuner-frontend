@@ -28,7 +28,9 @@ const UploadCustomTrainingData = ({
   setUploadMethod,
 }: {
   setUploadMethod: Dispatch<
-    SetStateAction<"" | "customData" | "conversationData">
+    SetStateAction<
+      "" | "customData" | "conversationHistory" | "selectFromUploadedFiles"
+    >
   >;
 }) => {
   const [pageActive, setPageActive] = useState(1);

@@ -33,7 +33,9 @@ const FileUploadPage = ({
   setUploadedFileId,
 }: {
   setUploadMethod: Dispatch<
-    SetStateAction<"" | "customData" | "conversationData">
+    SetStateAction<
+      "" | "customData" | "conversationHistory" | "selectFromUploadedFiles"
+    >
   >;
   setPageActive: Dispatch<SetStateAction<number>>;
   setUploadedFileId: Dispatch<SetStateAction<string>>;

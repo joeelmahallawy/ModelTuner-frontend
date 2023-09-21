@@ -30,7 +30,9 @@ const UploadPage = ({
   setUploadMethod,
 }: {
   setUploadMethod: Dispatch<
-    SetStateAction<"" | "customData" | "conversationData">
+    SetStateAction<
+      "" | "customData" | "conversationHistory" | "selectFromUploadedFiles"
+    >
   >;
 }) => {
   const [chatGptConversations, setChatGptConversations] = useState<
@@ -237,6 +239,7 @@ const UploadPage = ({
                         JSON.parse(e.target.result as string)
                       );
                     };
+
                     setConversationsAreLoaded(true);
 
                     // return showCustomToast({message:"Uploa"})

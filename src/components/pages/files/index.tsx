@@ -13,13 +13,19 @@ import {
   Modal,
   Divider,
   Button,
+  FileButton,
 } from "@mantine/core";
 
 import moment from "moment";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCirclePlus, IconPlus, IconRobot } from "@tabler/icons-react";
 import { Prism } from "@mantine/prism";
-import { fetchWithJWT, getEnvironmentServerUrl } from "../../../utils";
+import {
+  fetchWithJWT,
+  formatToTrainingData,
+  getEnvironmentServerUrl,
+  showCustomToast,
+} from "../../../utils";
 import { showBadge } from "../../helpers";
 import OpenFileContentModal from "./openFileContentModal";
 
@@ -48,20 +54,87 @@ const FilesSection = () => {
   const [currentFileOpen, setCurrentFileOpen] =
     useState<OpenAI.FileObject>(null);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // if (state?.loading || !state.value) {
   //   <Center sx={{ height: "80vh" }}>
   //     <Loader size="xl" color="black" />
   //   </Center>;
   // }
 
+  // if (isLoading) {
+  //   return (
+  //     <Center sx={{ height: "80vh" }}>
+  //       <Loader size="xl" color="black" />
+  //     </Center>
+  //   );
+  // }
+
   return (
     <Box>
       <Center sx={{ justifyContent: "space-between" }}>
         <Title order={2}>Files uploaded</Title>
-        <Button leftIcon={<IconCirclePlus />}>Upload file</Button>
+        <FileButton
+          onChange={(file) => {
+            console.log(file);
+            if (!file) return;
+
+            setIsLoading(true);
+            const fileReader = new FileReader();
+            fileReader.readAsText(file, "UTF-8");
+            fileReader.onload = (e) => {
+              console.log(e.target.result);
+              (async () => {
+                const uploadFile = await fetchWithJWT(
+                  `${getEnvironmentServerUrl()}/uploadFileToOpenAI`,
+                  {
+                    body: JSON.stringify({
+                      trainingData: e.target.result as string,
+                      datasetName: file.name,
+                    }),
+                    method: "POST",
+                  }
+                );
+
+                const uploadFileResponse = await uploadFile.json();
+
+                if (uploadFileResponse?.id) {
+                  setIsLoading(false);
+                  doFetch();
+                  return showCustomToast({
+                    color: "green",
+                    message: `Successfully uploaded "${file.name}" to OpenAI!`,
+                    title: "",
+                  });
+                }
+                setIsLoading(false);
+                return showCustomToast({
+                  color: "red",
+                  message:
+                    uploadFileResponse?.message || uploadFileResponse?.error,
+                  title: "",
+                });
+
+                //
+              })();
+            };
+          }}
+          accept=".jsonl"
+        >
+          {(props) => (
+            <Button
+              loading={isLoading}
+              {...props}
+              leftIcon={<IconCirclePlus />}
+            >
+              Upload file
+            </Button>
+          )}
+        </FileButton>
       </Center>
       <Divider mt={10} mb={10} />
       <OpenFileContentModal
+        refreshFiles={doFetch}
         opened={opened}
         close={close}
         currentFileOpen={currentFileOpen}
@@ -94,7 +167,18 @@ const FilesSection = () => {
                 "&:hover": { cursor: "pointer", background: t.colors.gray[1] },
               })}
             >
-              <Title order={4}>{file?.filename}</Title>
+              <Title
+                order={4}
+                align="center"
+                sx={{
+                  width: "90%",
+                  textOverflow: "clip",
+                  overflowX: "scroll",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {file?.filename}
+              </Title>
               {showBadge(file.status)}
               {/* {file.status} */}
             </Center>

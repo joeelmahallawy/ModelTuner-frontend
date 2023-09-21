@@ -5,13 +5,14 @@ import SidebarWrapper from "../components/dashboard/SidebarWrapper";
 import { useState } from "react";
 import UploadCustomTrainingData from "../components/uploadCustomTrainingData";
 import UploadPage from "../components/uploadChatHistoryData.tsx";
+import SelectDatasetFromUploadedFiles from "../components/selectFromUploadedFiles";
 
 const FineTunePage = () => {
   const [chatGptConversations, setChatGptConversations] = useState("");
   console.log(chatGptConversations);
 
   const [uploadMethod, setUploadMethod] = useState<
-    "" | "customData" | "conversationData"
+    "" | "customData" | "conversationHistory" | "selectFromUploadedFiles"
   >("");
 
   return (
@@ -32,12 +33,20 @@ const FineTunePage = () => {
                     }}
                     color="cyan"
                   >
-                    Upload custom training data
+                    Upload new file
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setUploadMethod("selectFromUploadedFiles");
+                    }}
+                    color="indigo"
+                  >
+                    Select uploaded file
                   </Button>
 
                   <Button
                     onClick={() => {
-                      setUploadMethod("conversationData");
+                      setUploadMethod("conversationHistory");
                     }}
                     color="teal"
                   >
@@ -53,7 +62,12 @@ const FineTunePage = () => {
             <UploadCustomTrainingData setUploadMethod={setUploadMethod} />
           </Fade>
         )}
-        {uploadMethod === "conversationData" && (
+        {uploadMethod === "selectFromUploadedFiles" && (
+          <Fade left>
+            <SelectDatasetFromUploadedFiles />
+          </Fade>
+        )}
+        {uploadMethod === "conversationHistory" && (
           <Fade left>
             <UploadPage setUploadMethod={setUploadMethod} />
           </Fade>

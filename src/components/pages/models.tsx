@@ -6,9 +6,13 @@ import {
   Modal,
   Title,
   Loader,
+  ActionIcon,
+  Box,
+  TextInput,
+  Flex,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import UploadPage from "../uploadChatHistoryData.tsx";
+import UploadPage from "../uploadChatHistoryData.tsx/index.jsx";
 import { useEffect, useState } from "react";
 import { useAsyncFn } from "react-use";
 import {
@@ -22,6 +26,7 @@ import {
   IconBrandNodejs,
   IconBrandPython,
   IconBrandTypescript,
+  IconEdit,
   IconRobot,
 } from "@tabler/icons-react";
 import moment from "moment";
@@ -44,6 +49,7 @@ const ModelsSection = () => {
       `${getEnvironmentServerUrl()}/listModels`
     );
     const result = await response.json();
+
     return result;
   }, []);
 
@@ -51,10 +57,16 @@ const ModelsSection = () => {
     useState<OpenAI.Models.Model>(null);
 
   const router = useRouter();
+  const [changeModelNameEditIsOn, setChangeModelNameEditIsOn] = useState(false);
+  const [newModelName, setNewModelName] = useState(currentModelOpen?.id);
 
   useEffect(() => {
     doFetch();
   }, []);
+
+  useEffect(() => {
+    setNewModelName("");
+  }, [currentModelOpen]);
 
   if (state.loading || !state?.value) {
     return (
@@ -79,8 +91,92 @@ const ModelsSection = () => {
         //   </Title>
         // }
       >
+        {console.log(currentModelOpen)}
         <Center sx={{ justifyContent: "space-between" }}>
           <span style={{ fontWeight: 600, fontSize: 16 }}>Model name:</span>{" "}
+          <Center>
+            {changeModelNameEditIsOn ? (
+              <Center sx={{ alignItems: "end" }}>
+                <TextInput
+                  size="xs"
+                  defaultValue={
+                    newModelName ||
+                    (typeof window !== "undefined" &&
+                      window.localStorage.getItem(currentModelOpen?.id)) ||
+                    `Custom model #${
+                      state?.value?.models
+                        ?.filter(
+                          (model) =>
+                            // is a custom model
+                            !model.owned_by.includes("openai") &&
+                            !model.owned_by.includes("system")
+                        )
+                        ?.sort((a, b) => a.created - b.created)
+                        .findIndex(
+                          (model) => model?.id === currentModelOpen?.id
+                        ) + 1
+                    }`
+                  }
+                  onChange={(e) => {
+                    setNewModelName(e.currentTarget.value);
+                  }}
+                  label="New model name"
+                  placeholder="e.g. Digital Marketing model"
+                />
+                <Button
+                  size="xs"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.localStorage.setItem(
+                        currentModelOpen?.id,
+                        newModelName
+                      );
+                    }
+                    setChangeModelNameEditIsOn((o) => !o);
+                    return showCustomToast({
+                      color: "green",
+                      message: `Successfully changed model name to ${newModelName}!`,
+                      title: "",
+                    });
+                  }}
+                >
+                  Save
+                </Button>
+              </Center>
+            ) : (
+              <>
+                <Text size={16}>
+                  {typeof window !== "undefined" &&
+                  window.localStorage.getItem(currentModelOpen?.id)
+                    ? window.localStorage.getItem(currentModelOpen?.id)
+                    : `Custom model #${
+                        state?.value?.models
+                          ?.filter(
+                            (model) =>
+                              // is a custom model
+                              !model.owned_by.includes("openai") &&
+                              !model.owned_by.includes("system")
+                          )
+                          ?.sort((a, b) => a.created - b.created)
+                          .findIndex(
+                            (model) => model?.id === currentModelOpen?.id
+                          ) + 1
+                      }`}
+                </Text>
+                <ActionIcon>
+                  <IconEdit
+                    onClick={() => {
+                      setChangeModelNameEditIsOn((o) => !o);
+                    }}
+                    size="1.125rem"
+                  />
+                </ActionIcon>
+              </>
+            )}
+          </Center>
+        </Center>
+        <Center sx={{ justifyContent: "space-between" }}>
+          <span style={{ fontWeight: 600, fontSize: 16 }}>Model ID:</span>{" "}
           <Text size={16}>{currentModelOpen?.id}</Text>
         </Center>
         <Center sx={{ justifyContent: "space-between" }}>
@@ -183,6 +279,7 @@ main();`}
               });
             }
 
+            setDeleteModelIsLoading(false);
             return showCustomToast({
               color: "red",
               message: deleteModelResponse?.message,
@@ -232,6 +329,7 @@ main();`}
               !model.owned_by.includes("openai") &&
               !model.owned_by.includes("system")
           )
+          ?.sort((a, b) => b.created - a.created)
           ?.map((model, i) => (
             <Center
               onClick={() => {
@@ -245,6 +343,7 @@ main();`}
                 marginRight: 10,
                 marginTop: 10,
                 width: 300,
+                // width: "32%",
                 height: 100,
                 border: "0.5px solid gray",
                 flexDirection: "column",
@@ -254,8 +353,32 @@ main();`}
                 "&:hover": { cursor: "pointer", background: t.colors.gray[1] },
               })}
             >
-              {console.log(model)}
-              <Title order={4}>{model.id}</Title>
+              <IconRobot size={24} style={{ strokeWidth: 2.25 }} />
+
+              <Title
+                fw={500}
+                order={4}
+                align="center"
+                sx={{
+                  width: "90%",
+                  textOverflow: "clip",
+                  // overflowX: "scroll",
+                  // whiteSpace: "nowrap",
+                }}
+              >
+                {typeof window !== "undefined" &&
+                window.localStorage.getItem(model?.id)
+                  ? window.localStorage.getItem(model?.id)
+                  : `Custom model #${Math.abs(
+                      state?.value?.models?.filter(
+                        (model) =>
+                          // is a custom model
+                          !model.owned_by.includes("openai") &&
+                          !model.owned_by.includes("system")
+                      ).length - i
+                    )}`}
+                {/* {model?.id} */}
+              </Title>
             </Center>
           ))}
     </>
