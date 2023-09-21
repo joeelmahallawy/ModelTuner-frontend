@@ -1,3 +1,6 @@
+import { getEncoding, encodingForModel } from "js-tiktoken";
+
+import { get_encoding } from "tiktoken";
 import { Prism } from "@mantine/prism";
 import {
   Anchor,
@@ -15,6 +18,8 @@ import {
 import { IconUpload, IconX, IconCodeDots } from "@tabler/icons-react";
 import { Dropzone } from "@mantine/dropzone";
 import { Dispatch, SetStateAction, useState } from "react";
+
+const encoding = get_encoding("cl100k_base");
 
 import {
   fetchWithJWT,
@@ -37,6 +42,9 @@ const FileUploadPage = ({
   const [jsonlFileString, setJsonlFileString] = useState("");
   const [datasetDisplayModalOpened, setDatasetDisplayModalOpened] =
     useState(false);
+
+  // for counting ai tokens
+  // const encoding = get_encoding("cl100k_base");
 
   const [uploadingFileIsLoading, setUploadingFileIsLoading] = useState(false);
   return (
@@ -62,7 +70,7 @@ const FileUploadPage = ({
       {!jsonlFile ? (
         <>
           <Text>
-            Please upload a .jsonl file in{" "}
+            Please upload a .jsonl or .json file in{" "}
             <Anchor
               target="_blank"
               href="https://platform.openai.com/docs/guides/fine-tuning/preparing-your-dataset"
@@ -71,22 +79,41 @@ const FileUploadPage = ({
             </Anchor>
           </Text>
           <Text mb={5} size="sm" color="dimmed">
-            Note: A fine-tuned model can be trained on <u>only one</u> .jsonl
-            file
+            Note: A fine-tuned model can be trained on <u>only one</u>{" "}
+            .json/.jsonl file file
           </Text>
           <Dropzone
             onDrop={(files) => {
               const fileReader = new FileReader();
               fileReader.readAsText(files[0], "UTF-8");
+              let trainingTokenLength = 0;
               fileReader.onload = (e) => {
                 setJsonlFileString(e.target.result as string);
+
+                // console.log(e.target.result.toString().includes("\n"));
+
+                // trainingTokenLength = encoding.encode(
+                //   e.target.result.toString()
+                // ).length;
+
+                // console.log(trainingTokenLength);
+                // // console.log(trainingTokenLength);
+                // if (trainingTokenLength > 4000) {
+                //   return showCustomToast({
+                //     color: "red",
+                //     message: `Each training example is allowed a maximum of 4096 tokens, yours is currently ${
+                //       trainingTokenLength + 96
+                //     } tokens`,
+                //     title: "Dataset too large!",
+                //   });
+                // }
               };
               setJsonlFile(files[0]);
 
               // return showCustomToast({message:"Uploa"})
             }}
             onReject={
-              (files) => alert("Only .jsonl files are allowed")
+              (files) => alert("Only .json and .jsonl files are allowed")
               //   showCustomToast({
               //     message: "Please upload a .jsonl file",
               //     color: "red",
@@ -94,7 +121,7 @@ const FileUploadPage = ({
               //   })
             }
             maxSize={5 * 1024 ** 2}
-            accept={[".jsonl"]}
+            accept={[".json", ".jsonl"]}
           >
             <Group
               sx={{ justifyContent: "center" }}
@@ -207,7 +234,7 @@ const FileUploadPage = ({
             setUploadingFileIsLoading(false);
             return showCustomToast({
               color: "red",
-              message: uploadedFile?.error,
+              message: uploadedFile?.message || uploadedFile?.error,
               title: "",
             });
           }}

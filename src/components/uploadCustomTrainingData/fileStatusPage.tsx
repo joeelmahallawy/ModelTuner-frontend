@@ -46,7 +46,8 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
     <>
       <Text color="dimmed" size="sm">
         Note: a file must have a status of "processed" for it to be ready to
-        trained on.
+        trained on. This can take up to a couple of minutes. Head to the "Files"
+        tab to see track its status .
       </Text>
       <Center sx={{ justifyContent: "space-between" }}>
         <Center sx={{ gap: 10 }}>
@@ -62,7 +63,7 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
         <Button
           color="indigo"
           onClick={() => {
-            state?.retry();
+            if (state.loading!) state?.retry();
             return showCustomToast({
               color: "green",
               message: "File status refreshed!",

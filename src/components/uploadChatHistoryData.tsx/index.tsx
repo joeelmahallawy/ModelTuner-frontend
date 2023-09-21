@@ -20,7 +20,11 @@ import FeedChatGptModal from "../modal/feedChatGPT";
 import FileStatusPage from "../uploadCustomTrainingData/fileStatusPage";
 import { Dropzone } from "@mantine/dropzone";
 import { IconUpload, IconX, IconCodeDots, IconDots } from "@tabler/icons-react";
-import { showCustomToast } from "../../utils";
+import {
+  createDownloadUrlFromString,
+  formatToTrainingData,
+  showCustomToast,
+} from "../../utils";
 
 const UploadPage = ({
   setUploadMethod,
@@ -67,6 +71,48 @@ const UploadPage = ({
 
             {conversationsAreLoaded && chatGptConversations.length > 0 ? (
               <>
+                <Text c="dimmed" mb={10}>
+                  <span style={{ fontWeight: 400, color: "black" }}>
+                    {" "}
+                    Note:
+                  </span>{" "}
+                  You need to upload atleast 10 conversations to fine-tune a
+                  model on (check{" "}
+                  <Anchor
+                    target="_blank"
+                    href="https://platform.openai.com/docs/guides/fine-tuning/preparing-your-dataset"
+                  >
+                    OpenAI's documentation
+                  </Anchor>{" "}
+                  for more details). Feel free to{" "}
+                  <Anchor
+                    target="_blank"
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      const conversationsToSave = chatGptConversations.filter(
+                        (convo) =>
+                          selectedConversations.some(
+                            (convoTitle) => convoTitle === convo.title
+                          )
+                      );
+
+                      const trainingDataString = formatToTrainingData({
+                        selectedChatsForTrainingData: conversationsToSave,
+                      });
+                      createDownloadUrlFromString({
+                        data: trainingDataString,
+                        fileName: crypto.randomUUID(),
+                        fileType: "json",
+                      });
+                      // console.log(downloadJsonlFileUrl);
+                    }}
+                  >
+                    download
+                  </Anchor>{" "}
+                  the <u>currently selected</u> conversations and edit them
+                  yourself
+                </Text>
                 <Center
                   sx={{
                     justifyContent: "space-between",
@@ -94,7 +140,7 @@ const UploadPage = ({
 
                   <FeedChatGptModal
                     selectedConversations={selectedConversations}
-                    chatHistory={chatGptConversations}
+                    chatGptConversations={chatGptConversations}
                     setShowFileUploadPage={setShowFileUploadPage}
                     setUploadedFileId={setUploadedFileId}
                   />

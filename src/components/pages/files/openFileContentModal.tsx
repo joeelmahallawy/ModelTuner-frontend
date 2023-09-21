@@ -13,7 +13,11 @@ import { Prism } from "@mantine/prism";
 import moment from "moment";
 import OpenAI from "openai";
 import { useEffect, useState } from "react";
-import { fetchWithJWT, getEnvironmentServerUrl } from "../../../utils";
+import {
+  createDownloadUrlFromString,
+  fetchWithJWT,
+  getEnvironmentServerUrl,
+} from "../../../utils";
 import { useAsyncFn } from "react-use";
 import { IconDownload } from "@tabler/icons-react";
 import { useRouter } from "next/router";
@@ -84,14 +88,15 @@ const OpenFileContentModal = ({
           <Anchor download>
             <ActionIcon
               onClick={async () => {
-                // TODO: download JSON or CSV file in browser
-
-                console.log(currentFileOpen);
-                //   const blob = new Blob([fileContent], {
-                //     type: "application/json",
-                //   });
-                //   const href = URL.createObjectURL(blob);
-                //   // ;
+                createDownloadUrlFromString({
+                  data: fileContent,
+                  fileName: currentFileOpen.filename.includes("jsonl")
+                    ? currentFileOpen.filename.replace(".jsonl", "")
+                    : currentFileOpen.filename.replace(".csv", ""),
+                  fileType: currentFileOpen.filename.includes("jsonl")
+                    ? "json"
+                    : "csv",
+                });
               }}
               size="lg"
               sx={(t) => ({
