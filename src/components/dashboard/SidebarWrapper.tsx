@@ -163,7 +163,8 @@ export function LinksGroup({
           background:
             ((label === "Models" && router.pathname === "/models") ||
               (label === "Files" && router.pathname === "/files") ||
-              (label === "Account" && router.pathname === "/account")) &&
+              (label === "Account" && router.pathname === "/account") ||
+              (label === "Fine-tuning jobs" && router.pathname === "/jobs")) &&
             t.colors.gray[2],
         })}
       >

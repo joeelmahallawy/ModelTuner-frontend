@@ -63,6 +63,14 @@ export type FileStatus =
   | "deleting"
   | "deleted";
 
+export type FinetuneJobStatus =
+  | "created"
+  | "pending"
+  | "running"
+  | "succeeded"
+  | "failed"
+  | "cancelled";
+
 export type FinetuneJob = {
   created_at: number;
   error: string;

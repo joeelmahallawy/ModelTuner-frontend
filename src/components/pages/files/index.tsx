@@ -179,7 +179,7 @@ const FilesSection = () => {
               >
                 {file?.filename}
               </Title>
-              {showBadge(file.status)}
+              {showBadge(file.status, "filled")}
               {/* {file.status} */}
             </Center>
           ))
