@@ -106,7 +106,7 @@ export default function HomePage() {
             <Text
               component="span"
               variant="gradient"
-              gradient={{ from: "orange", to: "purple" }}
+              gradient={{ from: "indigo", to: "red" }}
               inherit
             >
               all-in-one

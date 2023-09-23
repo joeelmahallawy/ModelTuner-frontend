@@ -319,8 +319,9 @@ export default function HeaderMenu() {
             <Button
               radius={30}
               size="md"
-              variant="gradient"
-              gradient={{ from: "red", to: "purple" }}
+              color="indigo"
+              // variant="gradient"
+              // gradient={{ from: "red", to: "purple" }}
             >
               Log in
             </Button>
@@ -330,8 +331,9 @@ export default function HeaderMenu() {
             <Button
               radius={30}
               size="md"
-              variant="gradient"
-              gradient={{ from: "purple", to: "blue", deg: 35 }}
+              // variant="gradient"
+              color="pink"
+              // gradient={{ from: "purple", to: "blue", deg: 35 }}
             >
               Sign up
             </Button>
