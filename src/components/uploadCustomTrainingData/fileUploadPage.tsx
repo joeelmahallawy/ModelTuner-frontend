@@ -52,7 +52,16 @@ const FileUploadPage = ({
         onClose={() => setDatasetDisplayModalOpened(false)}
         withCloseButton={false}
       >
-        <Title order={4} mb={10}>
+        <Title
+          order={4}
+          mb={10}
+          sx={{
+            // width: "90%",
+            textOverflow: "ellipsis",
+            overflowX: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
           <span style={{ fontWeight: 400 }}>View file </span>({jsonlFile?.name})
         </Title>
         <Prism colorScheme="dark" language="tsx">
@@ -169,7 +178,16 @@ const FileUploadPage = ({
         </>
       ) : (
         <Center sx={{ justifyContent: "flex-start", gap: 10 }}>
-          <Title order={3} fw={400}>
+          <Title
+            order={4}
+            fw={400}
+            sx={{
+              // width: "90%",
+              textOverflow: "ellipsis",
+              overflowX: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
             Loaded file:{" "}
             <span style={{ fontWeight: 600 }}>
               {/* <code style={{ fontWeight: 600, color: "black" }}> */}"

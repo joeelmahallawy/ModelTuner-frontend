@@ -27,12 +27,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         body: JSON.stringify({ name, email, picture }),
       }
     );
-    const { jwt } = await loginWithGoogle.json();
+    const { jwt, firstTimeSignIn } = await loginWithGoogle.json();
 
     // maxAge is in seconds
     setCookie("jwt", jwt, { req, res, maxAge: 60 * 60 * 24 });
 
-    return res.redirect(`/models`);
+    return res.redirect(firstTimeSignIn ? `/onboarding` : `/models`);
   } catch (err) {
     throw {
       error: `${err.message}. IF YOU SEE THIS ERROR, PLEASE EMAIL THE DEVELOPER ABOUT IT (youssef.elmahallawy01@gmail.com)`,

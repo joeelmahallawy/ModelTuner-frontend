@@ -76,10 +76,10 @@ const SelectDatasetFromUploadedFiles = () => {
 
       {state?.value ? (
         state?.value?.files
-          .filter((file) => file.status !== "error")
-          .filter((file) => !file.filename.includes(".csv"))
+          ?.filter((file) => file.status !== "error")
+          ?.filter((file) => !file.filename.includes(".csv"))
           ?.sort((a, b) => b.created_at - a.created_at)
-          .map((file, i) => (
+          ?.map((file, i) => (
             <Center
               onClick={() => {
                 setCurrentFileOpen(file);
@@ -101,8 +101,19 @@ const SelectDatasetFromUploadedFiles = () => {
                 "&:hover": { cursor: "pointer", background: t.colors.gray[1] },
               })}
             >
-              <Title order={4}>{file?.filename}</Title>
-              {showBadge(file.status)}
+              <Title
+                order={4}
+                align="center"
+                sx={{
+                  width: "90%",
+                  textOverflow: "clip",
+                  overflowX: "scroll",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {file?.filename}
+              </Title>
+              {showBadge(file.status, "filled")}
               {/* {file.status} */}
             </Center>
           ))

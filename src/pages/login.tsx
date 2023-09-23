@@ -69,7 +69,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       redirect: {
         // take them to their dashboard
-        destination: "/dashboard",
+        destination: "/models",
         permanent: false,
       },
     };

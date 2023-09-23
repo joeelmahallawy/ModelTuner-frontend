@@ -145,7 +145,7 @@ const OpenFileContentModal = ({
                     await refreshFiles();
                   }
                   return showCustomToast({
-                    message: `Successfully deleted "${currentFileOpen?.filename}"!`,
+                    message: `Successfully deleted "${currentFileOpen?.filename}"`,
                     color: "green",
                     title: "",
                   });

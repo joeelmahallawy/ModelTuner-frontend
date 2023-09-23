@@ -68,8 +68,6 @@ const FeedChatGptModal = ({
               ),
             });
 
-            console.log(`TRIANIJNG DATA:`, trainingData);
-
             const uploadFile = await fetchWithJWT(
               `${getEnvironmentServerUrl()}/uploadFileToOpenAI`,
               {
@@ -80,16 +78,17 @@ const FeedChatGptModal = ({
 
             const uploadFileResponse = await uploadFile.json();
 
-            setShowFileUploadPage(true);
-            close();
             if (!uploadFile.ok) {
               setIsLoading(false);
               return showCustomToast({
-                message: uploadFileResponse.message,
+                message:
+                  uploadFileResponse?.error || uploadFileResponse?.message,
                 color: "red",
                 title: "",
               });
             }
+            setShowFileUploadPage(true);
+            close();
             setIsLoading(false);
             setUploadedFileId(uploadFileResponse.id);
             return showCustomToast({

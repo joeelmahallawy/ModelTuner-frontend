@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Center, Loader, MantineProvider } from "@mantine/core";
 import { SessionContext } from "../components/sessionProvider";
 import { useEffect, useState } from "react";
-import { fetchWithJWT } from "../utils";
+import { fetchWithJWT, sizes } from "../utils";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -38,6 +38,9 @@ export default function App(props: AppProps) {
         withGlobalStyles
         withNormalizeCSS
         theme={{
+          breakpoints: {
+            ...sizes,
+          },
           /** Put your mantine theme override here */
           colorScheme: "light",
         }}

@@ -12,8 +12,8 @@ import {
   Flex,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import UploadPage from "../uploadChatHistoryData.tsx/index.jsx";
-import { useEffect, useState } from "react";
+
+import { useContext, useEffect, useState } from "react";
 import { useAsyncFn } from "react-use";
 import {
   fetchWithJWT,
@@ -31,6 +31,8 @@ import {
 } from "@tabler/icons-react";
 import moment from "moment";
 import { Prism } from "@mantine/prism";
+import { SessionObject } from "../../utils/interfaces.js";
+import { SessionContext } from "../sessionProvider";
 
 const ModelsSection = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -59,6 +61,9 @@ const ModelsSection = () => {
   const router = useRouter();
   const [changeModelNameEditIsOn, setChangeModelNameEditIsOn] = useState(false);
   const [newModelName, setNewModelName] = useState(currentModelOpen?.id);
+
+  const [session, _]: [session: SessionObject, _: any] =
+    useContext(SessionContext);
 
   useEffect(() => {
     doFetch();
@@ -274,7 +279,7 @@ main();`}
               close();
               return showCustomToast({
                 color: "green",
-                message: "Successfully deleted model!",
+                message: "Successfully deleted model",
                 title: "",
               });
             }
@@ -299,6 +304,7 @@ main();`}
       <Center sx={{ justifyContent: "space-between" }}>
         <Title order={2}>Fine-tuned models</Title>
         <Button
+          disabled={!session?.user?.openAiApiKey}
           onClick={() => {
             router.push(`/finetune`);
           }}

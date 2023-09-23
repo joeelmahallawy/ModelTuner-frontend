@@ -73,7 +73,7 @@ const UploadPage = ({
 
             {conversationsAreLoaded && chatGptConversations.length > 0 ? (
               <>
-                <Text c="dimmed" mb={10}>
+                <Text size="sm" c="dimmed" mb={10}>
                   <span style={{ fontWeight: 400, color: "black" }}>
                     {" "}
                     Note:

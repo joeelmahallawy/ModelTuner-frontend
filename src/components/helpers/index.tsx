@@ -74,16 +74,16 @@ export const showFinetuneJobBadge = (
           {status}
         </Badge>
       );
-    case "queued":
-      return (
-        <Badge color="yellow" variant={variant}>
-          {status}
-        </Badge>
-      );
     case "running":
       return (
         <Badge color="indigo" variant={variant}>
           {status}
+        </Badge>
+      );
+    default:
+      return (
+        <Badge color="yellow" variant={variant}>
+          queued
         </Badge>
       );
   }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import EditorJS from "@editorjs/editorjs";
 
 import { OpenAI } from "openai";
@@ -28,6 +28,8 @@ import {
 } from "../../../utils";
 import { showBadge } from "../../helpers";
 import OpenFileContentModal from "./openFileContentModal";
+import { SessionObject } from "../../../utils/interfaces";
+import { SessionContext } from "../../sessionProvider";
 
 const FilesSection = () => {
   // @ts-expect-error
@@ -53,6 +55,8 @@ const FilesSection = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [currentFileOpen, setCurrentFileOpen] =
     useState<OpenAI.FileObject>(null);
+  const [session, _]: [session: SessionObject, _: any] =
+    useContext(SessionContext);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -123,6 +127,7 @@ const FilesSection = () => {
         >
           {(props) => (
             <Button
+              disabled={!session?.user?.openAiApiKey}
               loading={isLoading}
               {...props}
               leftIcon={<IconCirclePlus />}

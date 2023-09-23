@@ -1,3 +1,4 @@
+import { LuWorkflow } from "react-icons/lu";
 import {
   Navbar,
   Text,
@@ -228,7 +229,7 @@ const mockdata = [
 
   {
     label: "Fine-tuning jobs",
-    icon: IconRotateClockwise,
+    icon: LuWorkflow,
   },
   {
     label: "Files",

@@ -67,7 +67,9 @@ const AccountPage = () => {
             {moment(session?.user?.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
           </Text>
         </Box>
-        <Button onClick={open}>Open API Keys</Button>
+        <Button size="md" onClick={open}>
+          Open API Keys
+        </Button>
 
         <Modal
           opened={opened}
@@ -122,7 +124,7 @@ const AccountPage = () => {
                   >
                     OpenAI API key
                   </Anchor>{" "}
-                  to start training your own models.
+                  to start making requests
                 </Text>
               }
             />
