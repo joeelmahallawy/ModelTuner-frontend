@@ -1,4 +1,13 @@
-import { Text, TextInput, Center, Box, Title, Button } from "@mantine/core";
+import {
+  Text,
+  TextInput,
+  Center,
+  Box,
+  Title,
+  Button,
+  Anchor,
+  Modal,
+} from "@mantine/core";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {
@@ -6,9 +15,12 @@ import {
   getEnvironmentServerUrl,
   showCustomToast,
 } from "../utils";
+import { useDisclosure } from "@mantine/hooks";
 
 const OnboardingPage = () => {
   const [openAiApiKey, setOpenAiApiKey] = useState("");
+  const [opened, { open, close }] = useDisclosure(false);
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   return (
@@ -60,6 +72,43 @@ const OnboardingPage = () => {
         >
           Submit
         </Button>
+
+        <Modal withCloseButton={false} opened={opened} onClose={close}>
+          <Title fw={500} order={5}>
+            This step is necessary for using our platform, are you sure you want
+            to set it later?
+          </Title>
+          <Text mt={5} size="xs" c="dimmed">
+            You won't be able to use <u>any</u> of our features until you set
+            your API key
+          </Text>
+
+          <Center sx={{ justifyContent: "flex-end", marginTop: 20, gap: 3 }}>
+            <Button onClick={close} size="xs" fullWidth color="red">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                router.push(`/account`);
+              }}
+              size="xs"
+              fullWidth
+            >
+              Confirm
+            </Button>
+          </Center>
+        </Modal>
+        <Center sx={{ justifyContent: "flex-end" }}>
+          <Anchor
+            onClick={(e) => {
+              e.preventDefault();
+              open();
+            }}
+            mt={10}
+          >
+            Skip step
+          </Anchor>
+        </Center>
       </Box>
     </Center>
   );

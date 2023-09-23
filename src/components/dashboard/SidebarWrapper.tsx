@@ -296,7 +296,7 @@ export function Sidebar() {
       <Navbar.Section className={classes.header}>
         <Group position="apart">
           <Title order={4}>(LOGO HERE)</Title>
-          <Code sx={{ fontWeight: 700 }}>v3.1.2</Code>
+          <Code sx={{ fontWeight: 700 }}>v1.1.0</Code>
         </Group>
       </Navbar.Section>
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
@@ -340,6 +340,7 @@ export function Sidebar() {
 }
 
 const AppHeader = ({ session }: { session: SessionObject }) => {
+  const router = useRouter();
   return (
     <Center
       pl={20}
@@ -409,8 +410,21 @@ const AppHeader = ({ session }: { session: SessionObject }) => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Item icon={<IconUser size={14} />}>Account</Menu.Item>
-            <Menu.Item color="red" icon={<IconTrash size={14} />}>
+            <Menu.Item
+              onClick={() => {
+                router.push(`/account`);
+              }}
+              icon={<IconUser size={14} />}
+            >
+              Account
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                router.push(`/logout`);
+              }}
+              color="red"
+              icon={<IconTrash size={14} />}
+            >
               Log out
             </Menu.Item>
           </Menu.Dropdown>
