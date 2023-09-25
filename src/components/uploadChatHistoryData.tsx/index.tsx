@@ -378,7 +378,6 @@ const UploadPage = ({
               : // show "no convos found" if the conversations are loaded and there are none
                 conversationsAreLoaded && (
                   <Title align="center" mt={10} order={3}>
-                    {console.log("hi", chatGptConversations)}
                     No conversations found
                   </Title>
                 )}

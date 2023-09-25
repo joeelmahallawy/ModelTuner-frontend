@@ -52,7 +52,6 @@ const SelectDatasetFromUploadedFiles = () => {
     doFetch();
   }, []);
 
-  console.log(state);
   const [currentFileOpen, setCurrentFileOpen] =
     useState<OpenAI.FileObject>(null);
 

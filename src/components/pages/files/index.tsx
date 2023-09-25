@@ -80,14 +80,12 @@ const FilesSection = () => {
         <Title order={2}>Files uploaded</Title>
         <FileButton
           onChange={(file) => {
-            console.log(file);
             if (!file) return;
 
             setIsLoading(true);
             const fileReader = new FileReader();
             fileReader.readAsText(file, "UTF-8");
             fileReader.onload = (e) => {
-              console.log(e.target.result);
               (async () => {
                 const uploadFile = await fetchWithJWT(
                   `${getEnvironmentServerUrl()}/uploadFileToOpenAI`,

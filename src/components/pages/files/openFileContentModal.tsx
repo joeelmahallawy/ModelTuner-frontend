@@ -51,7 +51,7 @@ const OpenFileContentModal = ({
       `${getEnvironmentServerUrl()}/getFileContent?id=${fileID}`
     );
     const result = await response.json();
-    console.log(`RESULT:`, result);
+
     setFileContent(
       typeof result?.fileContent === "string"
         ? result?.fileContent

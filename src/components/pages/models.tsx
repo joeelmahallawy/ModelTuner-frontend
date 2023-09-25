@@ -96,7 +96,6 @@ const ModelsSection = () => {
         //   </Title>
         // }
       >
-        {console.log(currentModelOpen)}
         <Center sx={{ justifyContent: "space-between" }}>
           <span style={{ fontWeight: 600, fontSize: 16 }}>Model name:</span>{" "}
           <Center>

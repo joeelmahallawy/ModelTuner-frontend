@@ -59,8 +59,6 @@ const FinetuneJobsPage = () => {
     doFetch();
   }, []);
 
-  console.log(state);
-
   return (
     <>
       <Head>

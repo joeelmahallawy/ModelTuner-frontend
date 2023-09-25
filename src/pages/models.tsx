@@ -10,7 +10,6 @@ const ModelsPage = () => {
   const [session, _]: [session: SessionObject, _: any] =
     useContext(SessionContext);
 
-  console.log(`SESSION FROM MODELS PAGE:`, session);
   return (
     <>
       <Head>

@@ -10,7 +10,6 @@ import Head from "next/head";
 
 const FineTunePage = () => {
   const [chatGptConversations, setChatGptConversations] = useState("");
-  console.log(chatGptConversations);
 
   const [uploadMethod, setUploadMethod] = useState<
     "" | "customData" | "conversationHistory" | "selectFromUploadedFiles"
