@@ -64,7 +64,11 @@ const FileUploadPage = ({
         >
           <span style={{ fontWeight: 400 }}>View file </span>({jsonlFile?.name})
         </Title>
-        <Prism colorScheme="dark" language="tsx">
+        <Prism
+          colorScheme="dark"
+          language="tsx"
+          sx={{ overflow: "scroll", height: 350 }}
+        >
           {jsonlFileString}
         </Prism>
         <Flex mt={10} justify={"end"}>
