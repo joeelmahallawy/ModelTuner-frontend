@@ -75,7 +75,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       redirect: {
         // take them to their dashboard
         destination: "/models",
-        permanent: true,
+        statusCode: 308,
       },
     };
   return { props: {} };
