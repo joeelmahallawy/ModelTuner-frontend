@@ -86,33 +86,29 @@ const AccountPage = () => {
             <form
               onSubmit={form.onSubmit(async (values) => {
                 setIsLoading(true);
-                const saveApiKey = await fetchWithJWT(
-                  `${getEnvironmentServerUrl()}/saveApiKey`,
+                const getModels = await fetchWithJWT(
+                  `${getEnvironmentServerUrl()}/testApiKey`,
                   {
-                    method: "POST",
                     body: JSON.stringify({ apiKey: values.apiKey }),
+                    method: "POST",
                   }
                 );
-
-                const apiKeySaved = await saveApiKey.json();
-
-                // sucessfully saved!
-                if (apiKeySaved?.success) {
+                const models = await getModels.json();
+                if (models.error) {
                   setIsLoading(false);
-                  close();
                   return showCustomToast({
-                    color: "green",
-                    message: "Successfully saved API key!",
+                    message: models.message,
                     title: "",
+                    color: "red",
                   });
                 }
 
-                // otherwise, there was an error and show the error
                 setIsLoading(false);
+                close();
                 return showCustomToast({
-                  color: "red",
-                  message: apiKeySaved.message,
+                  message: "Successfully saved API key!",
                   title: "",
+                  color: "green",
                 });
               })}
             >

@@ -95,24 +95,6 @@ const FileUploadPage = ({
               let trainingTokenLength = 0;
               fileReader.onload = (e) => {
                 setJsonlFileString(e.target.result as string);
-
-                // console.log(e.target.result.toString().includes("\n"));
-
-                // trainingTokenLength = encoding.encode(
-                //   e.target.result.toString()
-                // ).length;
-
-                // console.log(trainingTokenLength);
-                // // console.log(trainingTokenLength);
-                // if (trainingTokenLength > 4000) {
-                //   return showCustomToast({
-                //     color: "red",
-                //     message: `Each training example is allowed a maximum of 4096 tokens, yours is currently ${
-                //       trainingTokenLength + 96
-                //     } tokens`,
-                //     title: "Dataset too large!",
-                //   });
-                // }
               };
               setJsonlFile(files[0]);
 
