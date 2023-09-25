@@ -67,6 +67,7 @@ const LoginPage = () => {
     </>
   );
 };
+
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // if they're already logged in
   if (ctx.req.cookies["jwt"])
@@ -74,7 +75,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       redirect: {
         // take them to their dashboard
         destination: "/models",
-        permanent: false,
+        permanent: true,
       },
     };
   return { props: {} };
