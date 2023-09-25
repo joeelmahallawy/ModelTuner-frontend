@@ -8,14 +8,15 @@ export const UNAUTHENTICATED_PATHS = {
 };
 
 export function middleware(request: NextRequest) {
-  // the next page is login and the user is already authenticated, forward to dashboard
+  // the next page is login so check if they're already authed
   if (request.nextUrl.pathname === "/login") {
     const jwt = request.cookies.get("jwt");
-    // user is authed
+    // they're already logged in
     if (jwt?.value)
-      // skip login page
+      // so skip login page
       return NextResponse.redirect(new URL(`/models`, request.url));
   }
+
   // user is about to visit a page that needs login
   if (!UNAUTHENTICATED_PATHS[request.nextUrl.pathname]) {
     // the next page IS an authenticated page and requires login

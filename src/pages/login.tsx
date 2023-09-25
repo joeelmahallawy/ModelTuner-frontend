@@ -67,17 +67,3 @@ const LoginPage = () => {
     </>
   );
 };
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  // if they're already logged in
-  if (ctx.req.cookies["jwt"])
-    return {
-      redirect: {
-        // take them to their dashboard
-        destination: "/models",
-        statusCode: 308,
-      },
-    };
-  return { props: {} };
-};
-export default LoginPage;
