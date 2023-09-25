@@ -54,7 +54,7 @@ export default function App(props: AppProps) {
         <Notifications position="bottom-center" />
         <SessionContext.Provider value={[session, setSession]}>
           {/* VERCEL TRACKING */}
-          <Analytics />
+          {/* <Analytics /> */}
           <DefaultSeo {...createSEOConfig()} />
           {/* TODO: JUST UNCOMMENT THIS OUT IF WE EVER WANT TO USE GOOGLE ANALYTICS TRACKING */}
           {/* <GoogleAnalytics
