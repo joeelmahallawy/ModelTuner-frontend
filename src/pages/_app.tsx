@@ -20,12 +20,12 @@ export default function App(props: AppProps) {
   useEffect(() => {
     (async () => {
       // to ensure we don't fetch session on landing/login pages
-      if (router.pathname !== "/login" && router.pathname !== "/") {
-        //
-        const getSession = await fetchWithJWT(`/api/session`);
-        const sessionData = await getSession.json();
-        setSession(sessionData);
-      }
+      // if (router.pathname !== "/login" && router.pathname !== "/") {
+      //
+      const getSession = await fetchWithJWT(`/api/session`);
+      const sessionData = await getSession.json();
+      setSession(sessionData);
+      // }
     })();
   }, []);
 
@@ -54,7 +54,7 @@ export default function App(props: AppProps) {
         <Notifications position="bottom-center" />
         <SessionContext.Provider value={[session, setSession]}>
           {/* VERCEL TRACKING */}
-          {/* <Analytics /> */}
+          <Analytics />
           <DefaultSeo {...createSEOConfig()} />
           {/* TODO: JUST UNCOMMENT THIS OUT IF WE EVER WANT TO USE GOOGLE ANALYTICS TRACKING */}
           {/* <GoogleAnalytics
