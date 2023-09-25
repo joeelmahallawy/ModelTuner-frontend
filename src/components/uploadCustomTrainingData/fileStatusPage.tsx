@@ -51,7 +51,19 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
       </Text>
       <Center sx={{ justifyContent: "space-between" }}>
         <Center sx={{ gap: 10 }}>
-          <Text size="lg">{state?.value?.file?.filename}</Text>
+          <Text
+            size="lg"
+            sx={{
+              // width: 500,
+              maxWidth: 600,
+
+              textOverflow: "ellipsis",
+              overflowX: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {state?.value?.file?.filename}
+          </Text>
 
           {showBadge(state?.value?.file?.status, "filled")}
           {state?.value?.file?.status_details && (
@@ -63,7 +75,7 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
         <Button
           color="indigo"
           onClick={() => {
-            if (state.loading!) state?.retry();
+            if (!state.loading) state?.retry();
             return showCustomToast({
               color: "green",
               message: "File status refreshed!",
@@ -94,11 +106,30 @@ const FileStatusPage = ({ uploadedFileId }: { uploadedFileId: string }) => {
           setOpened(false);
         }}
       >
-        <Text>
+        <Text
+          sx={{
+            width: "100%",
+            // maxWidth: 0,
+            // background: "red",
+            // textOverflow: "ellipsis",
+            // overflowX: "hidden",
+            // whiteSpace: "nowrap",
+          }}
+        >
           Your AI model will be trained on{" "}
-          <span style={{ fontWeight: 700 }}>
+          <Text
+            style={{
+              fontWeight: 700,
+
+              width: "100%",
+              // background: "red",
+              textOverflow: "clip",
+              overflowX: "scroll",
+              // whiteSpace: "nowrap",
+            }}
+          >
             "{state?.value?.file?.filename}".
-          </span>{" "}
+          </Text>{" "}
           Are you sure you want to create this fine-tuning job?
         </Text>
         <Text mt={10} color="dimmed" size="xs">
