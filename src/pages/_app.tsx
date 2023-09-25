@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import logo from "../../assets/icon.ico";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -47,12 +48,13 @@ export default function App(props: AppProps) {
           breakpoints: {
             ...sizes,
           },
-          /** Put your mantine theme override here */
           colorScheme: "light",
         }}
       >
         <Notifications position="bottom-center" />
         <SessionContext.Provider value={[session, setSession]}>
+          {/* VERCEL TRACKING */}
+          <Analytics />
           <DefaultSeo {...createSEOConfig()} />
           <GoogleAnalytics
             gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
