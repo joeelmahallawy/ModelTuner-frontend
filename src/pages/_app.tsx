@@ -56,9 +56,10 @@ export default function App(props: AppProps) {
           {/* VERCEL TRACKING */}
           <Analytics />
           <DefaultSeo {...createSEOConfig()} />
-          <GoogleAnalytics
+          {/* TODO: JUST UNCOMMENT THIS OUT IF WE EVER WANT TO USE GOOGLE ANALYTICS TRACKING */}
+          {/* <GoogleAnalytics
             gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
-          />
+          /> */}
 
           {/* show page when we have session fetched OR */}
           {session ||
