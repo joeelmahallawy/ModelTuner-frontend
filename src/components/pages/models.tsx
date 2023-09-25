@@ -155,7 +155,7 @@ const ModelsSection = () => {
                     textOverflow: "ellipsis",
                     overflowX: "hidden",
                     whiteSpace: "nowrap",
-                    width: 400,
+                    maxWidth: 400,
                   }}
                 >
                   {typeof window !== "undefined" &&
