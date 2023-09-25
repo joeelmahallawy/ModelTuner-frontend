@@ -14,7 +14,9 @@ export function middleware(request: NextRequest) {
     // they're already logged in
     if (jwt?.value)
       // so skip login page
-      return NextResponse.redirect(new URL(`/models`, request.url));
+      return NextResponse.redirect(new URL(`/models`, request.url), {
+        status: 308,
+      });
   }
 
   // user is about to visit a page that needs login
