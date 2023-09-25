@@ -19,10 +19,10 @@ export const showCustomToast = ({
   });
 
 const DEVELOPMENT_SERVER_URL = `http://localhost:4000`;
-const PRODUCTION_SERVER_URL = `http://localhost:4000`;
+const PRODUCTION_SERVER_URL = `https://api.modeltunerai.com`;
 
 const DEVELOPMENT_WEBSITE_URL = `http://localhost:3000`;
-const PRODUCTION_WEBSITE_URL = `http://localhost:3000`;
+const PRODUCTION_WEBSITE_URL = `https://www.modeltunerai.com`;
 
 export const getEnvironmentServerUrl = () =>
   process.env.NODE_ENV === "production"
