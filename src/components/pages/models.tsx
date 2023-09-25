@@ -149,7 +149,15 @@ const ModelsSection = () => {
               </Center>
             ) : (
               <>
-                <Text size={16}>
+                <Text
+                  size={16}
+                  sx={{
+                    textOverflow: "ellipsis",
+                    overflowX: "hidden",
+                    whiteSpace: "nowrap",
+                    width: 400,
+                  }}
+                >
                   {typeof window !== "undefined" &&
                   window.localStorage.getItem(currentModelOpen?.id)
                     ? window.localStorage.getItem(currentModelOpen?.id)
@@ -367,9 +375,9 @@ main();`}
                 align="center"
                 sx={{
                   width: "90%",
-                  textOverflow: "clip",
-                  // overflowX: "scroll",
-                  // whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflowX: "hidden",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {typeof window !== "undefined" &&

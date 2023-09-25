@@ -214,7 +214,15 @@ const SelectFileAndShowContentModal = ({
       <Divider mt={10} />
 
       <Center mt={10} mb={10} sx={{ justifyContent: "space-between" }}>
-        <Title fw={600} order={3}>
+        <Title
+          fw={600}
+          order={3}
+          sx={{
+            width: "100%",
+            textOverflow: "ellipsis",
+            overflowX: "hidden",
+          }}
+        >
           {currentFileOpen?.filename}
         </Title>
       </Center>
