@@ -86,6 +86,7 @@ const AccountPage = () => {
             <form
               onSubmit={form.onSubmit(async (values) => {
                 setIsLoading(true);
+                // test api key by listing models
                 const getModels = await fetchWithJWT(
                   `${getEnvironmentServerUrl()}/testApiKey`,
                   {
