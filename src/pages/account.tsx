@@ -23,6 +23,7 @@ import {
   getEnvironmentServerUrl,
   showCustomToast,
 } from "../utils";
+import Head from "next/head";
 
 const AccountPage = () => {
   const [session, _]: [session: SessionObject, _: any] =
@@ -45,97 +46,104 @@ const AccountPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <SidebarWrapper>
-      <Title order={2}>Account settings</Title>
-      <Divider mt={10} />
+    <>
+      <Head>
+        <title>Account Settings – ModelTuner</title>
+      </Head>
+      <SidebarWrapper>
+        <Title order={2}>Account settings</Title>
+        <Divider mt={10} />
 
-      <Flex mt={10} sx={{ justifyContent: "space-between" }}>
-        <Box>
-          <Text c="dimmed" mt={10}>
-            Name
-          </Text>
-          <Text fw={500}>{session?.user?.name}</Text>
-          <Text c="dimmed" mt={10}>
-            Email
-          </Text>
-          <Text fw={500}>{session?.user?.email}</Text>
+        <Flex mt={10} sx={{ justifyContent: "space-between" }}>
+          <Box>
+            <Text c="dimmed" mt={10}>
+              Name
+            </Text>
+            <Text fw={500}>{session?.user?.name}</Text>
+            <Text c="dimmed" mt={10}>
+              Email
+            </Text>
+            <Text fw={500}>{session?.user?.email}</Text>
 
-          <Text c="dimmed" mt={10}>
-            Member since
-          </Text>
-          <Text fw={500}>
-            {moment(session?.user?.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-          </Text>
-        </Box>
-        <Button size="md" onClick={open}>
-          Open API Keys
-        </Button>
+            <Text c="dimmed" mt={10}>
+              Member since
+            </Text>
+            <Text fw={500}>
+              {moment(session?.user?.createdAt).format(
+                "MMMM Do YYYY, h:mm:ss a"
+              )}
+            </Text>
+          </Box>
+          <Button size="md" onClick={open}>
+            Open API Keys
+          </Button>
 
-        <Modal
-          opened={opened}
-          onClose={close}
-          title={<Title order={3}>OpenAI API Key</Title>}
-        >
-          <form
-            onSubmit={form.onSubmit(async (values) => {
-              setIsLoading(true);
-              const saveApiKey = await fetchWithJWT(
-                `${getEnvironmentServerUrl()}/saveApiKey`,
-                {
-                  method: "POST",
-                  body: JSON.stringify({ apiKey: values.apiKey }),
+          <Modal
+            opened={opened}
+            onClose={close}
+            title={<Title order={3}>OpenAI API Key</Title>}
+          >
+            <form
+              onSubmit={form.onSubmit(async (values) => {
+                setIsLoading(true);
+                const saveApiKey = await fetchWithJWT(
+                  `${getEnvironmentServerUrl()}/saveApiKey`,
+                  {
+                    method: "POST",
+                    body: JSON.stringify({ apiKey: values.apiKey }),
+                  }
+                );
+
+                const apiKeySaved = await saveApiKey.json();
+
+                // sucessfully saved!
+                if (apiKeySaved?.success) {
+                  setIsLoading(false);
+                  close();
+                  return showCustomToast({
+                    color: "green",
+                    message: "Successfully saved API key!",
+                    title: "",
+                  });
                 }
-              );
 
-              const apiKeySaved = await saveApiKey.json();
-
-              // sucessfully saved!
-              if (apiKeySaved?.success) {
+                // otherwise, there was an error and show the error
                 setIsLoading(false);
-                close();
                 return showCustomToast({
-                  color: "green",
-                  message: "Successfully saved API key!",
+                  color: "red",
+                  message: apiKeySaved.message,
                   title: "",
                 });
-              }
+              })}
+            >
+              <TextInput
+                required
+                placeholder="e.g. sk-ta34vKGsOOom65BT3BlbkFLlYh7jSaRJboB6SyKZNm2"
+                {...form.getInputProps("apiKey")}
+                label="API key"
+                withAsterisk
+                description={
+                  <Text>
+                    Enter your{" "}
+                    <Anchor
+                      href="https://platform.openai.com/account/api-keys"
+                      target="_blank"
+                    >
+                      OpenAI API key
+                    </Anchor>{" "}
+                    to start making requests
+                  </Text>
+                }
+              />
 
-              // otherwise, there was an error and show the error
-              setIsLoading(false);
-              return showCustomToast({
-                color: "red",
-                message: apiKeySaved.message,
-                title: "",
-              });
-            })}
-          >
-            <TextInput
-              required
-              placeholder="e.g. sk-ta34vKGsOOom65BT3BlbkFLlYh7jSaRJboB6SyKZNm2"
-              {...form.getInputProps("apiKey")}
-              label="API key"
-              withAsterisk
-              description={
-                <Text>
-                  Enter your{" "}
-                  <Anchor
-                    href="https://platform.openai.com/account/api-keys"
-                    target="_blank"
-                  >
-                    OpenAI API key
-                  </Anchor>{" "}
-                  to start making requests
-                </Text>
-              }
-            />
-
-            <Button loading={isLoading} type="submit" fullWidth mt={10}>
-              Save
-            </Button>
-          </form>
-        </Modal>
-      </Flex>
-    </SidebarWrapper>
+              <Button loading={isLoading} type="submit" fullWidth mt={10}>
+                Save
+              </Button>
+            </form>
+          </Modal>
+        </Flex>
+      </SidebarWrapper>
+    </>
   );
 };
 

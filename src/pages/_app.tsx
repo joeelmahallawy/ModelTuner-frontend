@@ -1,3 +1,4 @@
+import logo from "../../assets/icon.ico";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { Notifications } from "@mantine/notifications";
@@ -6,6 +7,9 @@ import { Center, Loader, MantineProvider } from "@mantine/core";
 import { SessionContext } from "../components/sessionProvider";
 import { useEffect, useState } from "react";
 import { fetchWithJWT, sizes } from "../utils";
+import { DefaultSeo } from "next-seo";
+import { createSEOConfig } from "../utils/seoMeta";
+import { GoogleAnalytics, usePageViews } from "nextjs-google-analytics";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -24,14 +28,16 @@ export default function App(props: AppProps) {
     })();
   }, []);
 
+  usePageViews();
+
   return (
     <>
       <Head>
-        <title>Page title</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+        <link rel="shortcut icon" href={logo.src} sizes="16x16"></link>
       </Head>
 
       <MantineProvider
@@ -47,6 +53,11 @@ export default function App(props: AppProps) {
       >
         <Notifications position="bottom-center" />
         <SessionContext.Provider value={[session, setSession]}>
+          <DefaultSeo {...createSEOConfig()} />
+          <GoogleAnalytics
+            gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+          />
+
           {/* show page when we have session fetched OR */}
           {session ||
           // were in login page

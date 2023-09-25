@@ -1,3 +1,4 @@
+import logo from "../../../assets/logo-2.png";
 import { LuWorkflow } from "react-icons/lu";
 import {
   Navbar,
@@ -18,6 +19,8 @@ import {
   AppShell,
   Header,
   Menu,
+  Image,
+  Flex,
 } from "@mantine/core";
 import {
   IconNotes,
@@ -255,8 +258,15 @@ const useStyles = createStyles((theme) => ({
   },
 
   header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+
     padding: theme.spacing.md,
+    paddingLeft: 5,
     paddingTop: 0,
+    paddingBottom: 5,
+    // background: "red",
     marginLeft: `calc(${theme.spacing.md} * -1)`,
     marginRight: `calc(${theme.spacing.md} * -1)`,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
@@ -292,12 +302,12 @@ export function Sidebar() {
   ));
 
   return (
-    <Navbar width={{ sm: 325 }} p="md" className={classes.navbar}>
+    <Navbar width={{ sm: 325 }} p="md" pt={5} className={classes.navbar}>
       <Navbar.Section className={classes.header}>
-        <Group position="apart">
-          <Title order={4}>(LOGO HERE)</Title>
-          <Code sx={{ fontWeight: 700 }}>v1.1.0</Code>
-        </Group>
+        <Anchor href={"/models"}>
+          <Image src={logo.src} width={165} />
+        </Anchor>
+        <Code sx={{ fontWeight: 700 }}>v1.1.0</Code>
       </Navbar.Section>
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
         <div className={classes.linksInner}>{links}</div>

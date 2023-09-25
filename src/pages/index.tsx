@@ -187,14 +187,6 @@ const IndexPage = () => {
               >
                 Get started
               </Button>
-              {/* <Button
-                variant="default"
-                radius="xl"
-                size="md"
-                style={{ flex: 1 }}
-              >
-                Source code
-              </Button> */}
             </Group>
           </div>
           <Image
@@ -208,13 +200,6 @@ const IndexPage = () => {
         </Box>
       </Center>
     </Box>
-    // <Box sx={{ background: colors.landingPageGray }}>
-    //   <HeaderMenu />
-    //   <HomePage />
-    //   <FeaturesPage />
-    //   <GetStartedSection />
-    //   <FooterSimple links={links} />
-    // </Box>
   );
 };
 export default IndexPage;
