@@ -19,6 +19,7 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     (async () => {
+      console.log("pathname:", router.pathname);
       // to ensure we don't fetch session on landing/login pages
       if (router.pathname !== "/login" && router.pathname !== "/") {
         //
