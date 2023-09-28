@@ -334,6 +334,14 @@ main();`}
             No models found
           </Title>
         )}
+      {!session?.user?.openAiApiKey && (
+        <Box>
+          <Title order={3} mt={10}>
+            You must set your OpenAI API key to start fine-tuning models
+          </Title>
+          <Text>You can set your API key under your 'Account' page</Text>
+        </Box>
+      )}
       {state?.value?.models &&
         state?.value?.models?.length &&
         state?.value?.models

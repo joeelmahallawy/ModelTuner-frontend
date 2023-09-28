@@ -10,6 +10,7 @@ import {
   TextInput,
   Anchor,
   Loader,
+  Box,
 } from "@mantine/core";
 import SidebarWrapper from "../components/dashboard/SidebarWrapper";
 import {
@@ -18,9 +19,9 @@ import {
   showCustomToast,
 } from "../utils";
 import { useAsyncFn, useEffectOnce } from "react-use";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { FinetuneJob } from "../utils/interfaces";
+import { FinetuneJob, SessionObject } from "../utils/interfaces";
 import moment from "moment";
 import { showFinetuneJobBadge } from "../components/helpers";
 import OpenAI from "openai";
@@ -32,12 +33,16 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Head from "next/head";
+import { SessionContext } from "../components/sessionProvider";
 
 const FinetuneJobsPage = () => {
   const [currentJobOpen, setCurrentJobOpen] =
     useState<OpenAI.FineTuning.Jobs.FineTuningJob>(null);
 
   const [opened, { open, close }] = useDisclosure(false);
+
+  const [session, _]: [session: SessionObject, _: any] =
+    useContext(SessionContext);
 
   // @ts-expect-error
   const [state, doFetch]: [
@@ -160,6 +165,16 @@ const FinetuneJobsPage = () => {
         <Divider my={10} />
         {state?.value?.jobs?.data && !state?.value?.jobs.data?.length && (
           <Title order={3}>No fine-tune jobs have been created</Title>
+        )}
+
+        {!session?.user?.openAiApiKey && (
+          <Box>
+            <Title order={3} mt={10}>
+              You must set your OpenAI API key first to start running
+              fine-tuning jobs
+            </Title>
+            <Text>You can set your API key under your 'Account' page</Text>
+          </Box>
         )}
         {state?.value ? (
           state?.value?.jobs?.data

@@ -145,6 +145,14 @@ const FilesSection = () => {
       {state?.value?.files && !state?.value?.files?.length && (
         <Title order={3}>No files uploaded</Title>
       )}
+      {!session?.user?.openAiApiKey && (
+        <Box>
+          <Title order={3} mt={10}>
+            You must set your OpenAI API key first to start uploading files
+          </Title>
+          <Text>You can set your API key under your 'Account' page</Text>
+        </Box>
+      )}
       {state?.value ? (
         state?.value?.files
           ?.sort((a, b) => b.created_at - a.created_at)
